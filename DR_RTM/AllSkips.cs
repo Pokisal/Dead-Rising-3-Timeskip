@@ -29,6 +29,8 @@ namespace DR_RTM
 		private static string Chapter;
 		private static string Objective;
 
+		private static string LastSkip;
+
 		private static string CurrentBoss;
 		private static string OldCurrentBoss;
 
@@ -104,50 +106,41 @@ namespace DR_RTM
 			Chapter = gameMemory.ReadStringAscii(IntPtr.Add(gameMemory.Pointer("deadrising3.exe", 24203168, 3736), 0), 10);
 			Objective = gameMemory.ReadStringAscii(IntPtr.Add(gameMemory.Pointer("deadrising3.exe", 24198456, 3280, 672, 1968, 304, 720), 1120), 110);
 			form.TimeDisplayUpdate(StringTime(gameTime));
+			if (Objective == "Eat Food To Restore Health")
+            {
+				LastSkip = " ";
+            }
 			if (skipMode == 0)
 			{
-				if (Objective == "Explore While Rhonda's Busy")
+				if (Objective == "Explore While Rhonda's Busy" && LastSkip != "Wait1")
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), 13u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259276), 0u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259280), 0u);
+					LastSkip = "Wait1";
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 6);
 				}
-				if (Objective == "Explore While Red Gets Fuel")
+				if (Objective == "Explore While Red Gets Fuel" && LastSkip != "Wait2")
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259268), 2u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), 4u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259276), 0u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259280), 0u);
+					LastSkip = "Wait2";
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 6);
 				}
-				if (Objective == "Explore While Rhonda Researches")
+				if (Objective == "Explore While Rhonda Researches" && LastSkip != "Wait3")
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259268), 2u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), 13u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259276), 0u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259280), 0u);
+					LastSkip = "Wait3";
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 6);
 				}
 			}
 			else if (skipMode == 1)
             {
 				if (Objective == "Explore While Rhonda's Busy" && CurrentBoss == "Zhi" && BossHealth == 0)
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), 13u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259276), 0u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259280), 0u);
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
 				}
 				if (Objective == "Explore While Red Gets Fuel" && CurrentBoss == "Darlene" && BossHealth == 0)
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259268), 2u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), 4u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259276), 0u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259280), 0u);
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
 				}
 				if (Objective == "Explore While Rhonda Researches" && OldCurrentBoss.Contains("Teddy") && !CurrentBoss.Contains("Teddy"))
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259268), 2u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), 13u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259276), 0u);
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259280), 0u);
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
 				}
 			}
 		}

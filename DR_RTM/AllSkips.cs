@@ -41,6 +41,8 @@ namespace DR_RTM
 		
 		private static uint gameTime;
 
+		private static bool TeddyStarted = false;
+
 		private static dynamic old = new ExpandoObject();
 
 		public static void Init()
@@ -110,6 +112,11 @@ namespace DR_RTM
 			if (Objective == "Eat Food To Restore Health")
             {
 				LastSkip = " ";
+				TeddyStarted = false;
+            }
+			if (CurrentBoss.Contains("Teddy"))
+            {
+				TeddyStarted = true;
             }
 			if (skipMode == 0)
 			{
@@ -141,7 +148,7 @@ namespace DR_RTM
 					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
 					Thread.Sleep(1000);
 				}
-				if (Objective == "Explore While Rhonda Researches" && OldCurrentBoss.Contains("Teddy") && !CurrentBoss.Contains("Teddy"))
+				if (Objective == "Explore While Rhonda Researches" && TeddyStarted == true && !CurrentBoss.Contains("Teddy"))
 				{
 					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
 					Thread.Sleep(1000);

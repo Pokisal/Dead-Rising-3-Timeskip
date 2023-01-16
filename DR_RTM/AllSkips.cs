@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Timers;
+using System.Threading;
 using ReadWriteMemory;
 
 namespace DR_RTM
@@ -11,7 +12,7 @@ namespace DR_RTM
 	{
 		public static double TimerInterval = 16.666666666666668;
 
-		public static Timer UpdateTimer = new Timer(TimerInterval);
+		public static System.Timers.Timer UpdateTimer = new System.Timers.Timer(TimerInterval);
 
 		public static Process GameProcess;
 
@@ -133,14 +134,17 @@ namespace DR_RTM
 				if (Objective == "Explore While Rhonda's Busy" && CurrentBoss == "Zhi" && BossHealth == 0)
 				{
 					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
+					Thread.Sleep(1000);
 				}
 				if (Objective == "Explore While Red Gets Fuel" && CurrentBoss == "Darlene" && BossHealth == 0)
 				{
 					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
+					Thread.Sleep(1000);
 				}
 				if (Objective == "Explore While Rhonda Researches" && OldCurrentBoss.Contains("Teddy") && !CurrentBoss.Contains("Teddy"))
 				{
 					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
+					Thread.Sleep(1000);
 				}
 			}
 		}

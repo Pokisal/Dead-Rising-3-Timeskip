@@ -33,7 +33,6 @@ namespace DR_RTM
 		private static string LastSkip;
 
 		private static string CurrentBoss;
-		private static string OldCurrentBoss;
 
 		private static uint BossHealth;
 
@@ -99,7 +98,6 @@ namespace DR_RTM
 			}
 			old.Objective = Objective;
 			old.BossHealth = BossHealth;
-			OldCurrentBoss = CurrentBoss;
 			Days = gameMemory.ReadUInt(IntPtr.Add(gameTimePtr, 2259268));
 			Hours = gameMemory.ReadUInt(IntPtr.Add(gameTimePtr, 2259272));
 			Minutes = gameMemory.ReadUInt(IntPtr.Add(gameTimePtr, 2259276));
@@ -123,35 +121,40 @@ namespace DR_RTM
 				if (Objective == "Explore While Rhonda's Busy" && LastSkip != "Wait1")
 				{
 					LastSkip = "Wait1";
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 6);
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 5);
 				}
 				if (Objective == "Explore While Red Gets Fuel" && LastSkip != "Wait2")
 				{
 					LastSkip = "Wait2";
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 6);
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 5);
 				}
 				if (Objective == "Explore While Rhonda Researches" && LastSkip != "Wait3")
 				{
 					LastSkip = "Wait3";
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 6);
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 5);
 				}
 			}
 			else if (skipMode == 1)
             {
-				if (Objective == "Explore While Rhonda's Busy" && CurrentBoss == "Zhi" && BossHealth == 0)
-				{
+				if (CurrentBoss == "gate the Motel" && LastSkip != "Wait1")
+                {
+					LastSkip = "Wait1";
 					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
-					Thread.Sleep(1000);
 				}
-				if (Objective == "Explore While Red Gets Fuel" && CurrentBoss == "Darlene" && BossHealth == 0)
+				if (Objective == "Explore While Rhonda's Busy" && CurrentBoss == "Zhi" && BossHealth == 0 && LastSkip != "Wait2")
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
-					Thread.Sleep(1000);
+					LastSkip = "Wait2";
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 4);
 				}
-				if (Objective == "Explore While Rhonda Researches" && TeddyStarted == true && !CurrentBoss.Contains("Teddy"))
+				if (Objective == "Explore While Red Gets Fuel" && CurrentBoss == "Darlene" && BossHealth == 0 && LastSkip != "Wait3")
 				{
-					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 1);
-					Thread.Sleep(1000);
+					LastSkip = "Wait3";
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 4);
+				}
+				if (Objective == "Explore While Rhonda Researches" && TeddyStarted == true && !CurrentBoss.Contains("Teddy") && LastSkip != "Wait4")
+				{
+					LastSkip = "Wait4";
+					gameMemory.WriteUInt(IntPtr.Add(gameTimePtr, 2259272), Hours + 4);
 				}
 			}
 		}

@@ -61,7 +61,7 @@ namespace DR_RTM
             {
 				num = 12u;
             }
-			if (Chapter == "main_menu_")
+			if (Chapter == "main_menu_" || Days == 0)
 			{
 				return string.Format("<missing>");
 			}
